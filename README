@@ -1,8 +1,10 @@
 # scriptools
-A set of small unix/linux command line tools written in bash/perl/other scripting languages.
+A set of small unix/linux command line tools written in bash/perl/other
+scripting languages.
 
-The scripts may be not free of errors and not guaranteed to work flawless. There are no
-warranties of any kind, neither explicit nor implied. Use at your own risk.
+The scripts may be not free of errors and not guaranteed to work
+flawlessly. There are no warranties of any kind, neither explicit nor
+implied. Use at your own risk.
 
-The stuff under this directory is dedicated to public domain. You are granted with permission
-to do whatever you want to.
+The stuff under this directory is dedicated to public domain. You are
+granted with permission to do whatever you want to.
