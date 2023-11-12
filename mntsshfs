@@ -1,0 +1,21 @@
+#!/bin/bash
+
+declare -A hosts
+
+filename=".usrmap"
+target="$1"
+
+while IFS= read -r line; do
+    hosts[${line%% *}]=${line#* }
+done < "$filename"
+
+user=${hosts[$target]}
+
+[ -z "${user}" ] && echo "Wrong host $target?" && exit 1
+
+readonly mntpoint="/tmp/sshfs/$target"
+readonly sshaddr="$user@$target"
+readonly sshpath="/home/$user"
+
+mkdir -p "$mntpoint"
+sshfs "$sshaddr:$sshpath" "$mntpoint"
