@@ -2,16 +2,20 @@
 
 declare -A hosts
 
-filename=".usrmap"
-target="$1"
+readonly config_dir="$HOME/.config/"
+readonly filename=".usrmap"
+readonly target="$1"
+
+[ -e "$config_dir/$filename" ] && config="$config_dir/$filename" || config="$(dirname "$(realpath "$0")")/$filename"
+[ ! -e $config ] && echo "No configuration found" && exit 1
 
 while IFS= read -r line; do
     hosts[${line%% *}]=${line#* }
-done < "$filename"
+done < "$config"
 
 user=${hosts[$target]}
 
-[ -z "${user}" ] && echo "Wrong host $target?" && exit 1
+[ -z "${user}" ] && echo "Wrong host $target?" && exit 2
 
 readonly mntpoint="/tmp/sshfs/$target"
 readonly sshaddr="$user@$target"
