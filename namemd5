@@ -1,5 +1,7 @@
 #!/bin/sh
 
+[ -z "$DIGESTTOOL" ] && DIGESTTOOL="md5sum"
+
 PATTERN="${1}"
 [ -z "${PATTERN}" ] && PATTERN="*.*"
 
@@ -7,7 +9,7 @@ k=1
 
 for i in `ls ${PATTERN}*`;
 do
-	name="$(sha1sum $i)"
+	name="$($DIGESTTOOL $i)"
 	echo -ne "$k: "; cp -vi "$i" "${name%% *}.${i##*.}"
 	k=$(( $k + 1 ))
 done
