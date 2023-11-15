@@ -1,6 +1,30 @@
 #!/bin/sh
 
+for i in $@;
+do
+	case "$i" in
+		--move|-m)
+			move_files=1
+			;;
+
+		--force|-f)
+			force_action=1
+			;;
+
+		*)
+			continue
+			;;
+	esac
+
+	shift
+done
+
+ACTION="cp"
+CMDLINE="-vi"
+
 [ -z "$DIGESTTOOL" ] && DIGESTTOOL="md5sum"
+[ ! -z "$move_files" ] && echo "Shall move" && ACTION="mv"
+[ ! -z "$force_action" ] && echo "Shall force operation" && CMDLINE="-fv"
 
 PATTERN="${1}"
 [ -z "${PATTERN}" ] && PATTERN="*.*"
@@ -10,6 +34,6 @@ k=1
 for i in `ls ${PATTERN}*`;
 do
 	name="$($DIGESTTOOL $i)"
-	echo -ne "$k: "; cp -vi "$i" "${name%% *}.${i##*.}"
+	echo -ne "$k: "; $ACTION $CMDLINE "$i" "${name%% *}.${i##*.}"
 	k=$(( $k + 1 ))
 done
