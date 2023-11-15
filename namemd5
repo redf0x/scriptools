@@ -3,13 +3,11 @@
 for i in $@;
 do
 	case "$i" in
-		"--move")
-		"-m")
+		--move|-m)
 			move_files=1
 			;;
 
-		"--force")
-		"-f")
+		--force|-f)
 			force_action=1
 			;;
 
