@@ -2,16 +2,30 @@
 
 for i in $@;
 do
-    if [ "$i" = "-m" ];
-    then
-        move_files=1
-        shift
-    fi
+	case "$i" in
+		"--move")
+		"-m")
+			move_files=1
+			;;
+
+		"--force")
+		"-f")
+			force_action=1
+			;;
+
+		*)
+			continue
+			;;
+	esac
+
+	shift
 done
 
 ACTION="cp"
+CMDLINE="-vi"
 
 [ ! -z "$move_files" ] && echo "Shall move" && ACTION="mv"
+[ ! -z "$force_action" ] && echo "Shall force operation" && CMDLINE="-fv"
 
 PATTERN="${1}"
 [ -z "${PATTERN}" ] && PATTERN="*.*"
@@ -21,6 +35,6 @@ k=1
 for i in `ls ${PATTERN}*`;
 do
 	name="$(sha1sum $i)"
-	echo -ne "$k: "; $ACTION -vi "$i" "${name%% *}.${i##*.}"
+	echo -ne "$k: "; $ACTION $CMDLINE "$i" "${name%% *}.${i##*.}"
 	k=$(( $k + 1 ))
 done
